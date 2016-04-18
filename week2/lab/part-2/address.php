@@ -45,43 +45,7 @@ class address {
                 }
                 
                 //echo $query;
-                
-                if (isset($_POST['submit'])) {
-            
-            $name = $_POST['fullname'];
-            $email = $_POST['email'];
-            $address= $_POST['address'];
-            $city = $_POST['city'];
-            $state = $_POST['state'];
-            $zip = $_POST['zip'];
-            $birthday = $_POST['birthday'];
-            //if( empty($name) ) {
-                //$message = 'Sorry Name is Empty';
-            //}
-            //else if ( empty($email) ) {
-                //$message = 'Sorry Email is Empty';
-            //} 
-            
-             // code to validate email and zip code
-        if(filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            echo "Valid Email";
-        }
-        else {
-            echo "Invalid email, please try again";
-        }
-        
-        //if (preg_match($pattern, $zip) === 1) {
-          //  echo "Zip Code is Valid";
-        //}
-        
-            if (addAddress($name, $email, $address, $city, $state, $zip, $birthday) ) {
-                $message = 'Address Added';
-            }
-            else {
-                $message = 'There was an error! Check your input and try again.';
-            }
-            
-        }//end if PostRequest
+               
     
     return $db->exec($query);
 }
