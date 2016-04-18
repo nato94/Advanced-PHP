@@ -86,8 +86,6 @@ and open the template in the editor.
        $database = new db();
        
        $database->dbconnect();
-       
-       $NewAddress->addMessage($name, $email, $address, $city, $state, $zip, $birthday);
 
         
         ?>
