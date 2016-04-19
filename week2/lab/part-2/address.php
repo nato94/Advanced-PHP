@@ -29,7 +29,7 @@ class address {
     $query = "INSERT INTO address VALUES (NULL, :name, :email, :address, :city, :state, :zip, :birthday)";
     
             try { 
-                $stmt = $newConnection->dbconnect()->prepare($query);
+                $stmt = $db->prepare($query);
 		$stmt->bindValue(':name', $name);	
                 $stmt->bindValue(':email', $email);
 		$stmt->bindValue(':address', $address);

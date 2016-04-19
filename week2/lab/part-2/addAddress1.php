@@ -35,9 +35,12 @@ and open the template in the editor.
         <?php
         
          require_once './autoload.php';
-        
-        //require_once 'functions/dbconnect.php';
-        //require_once 'functions/until.php';
+         
+         $NewAddress = new address();
+       
+       $database = new db();
+       
+       $database->dbconnect();
         
         
         $name = filter_input(INPUT_POST, 'name');
@@ -81,11 +84,7 @@ and open the template in the editor.
             
         }//end if PostRequest
         
-       $NewAddress = new address();
        
-       $database = new db();
-       
-       $database->dbconnect();
 
         
         ?>
@@ -99,7 +98,7 @@ and open the template in the editor.
         
     <div class="container">
     <h1>Add Address</h1>
-    <form action="addAddress.php" method="post">   
+    <form action="addAddress1.php" method="post">   
        Full Name: <input name="fullname" value="<?php echo $name; ?>" /> <br />
        Email: <input name="email" value="<?php echo $email; ?>" /> <br />
        Address: <input name="address" value="<?php echo $address; ?>" /> <br />
