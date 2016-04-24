@@ -21,7 +21,7 @@ and open the template in the editor.
         <?php
         
         require_once './autoload.php';
-        $msg = new Message();
+        $msg = new ErrorMessage();
         $msg->addMessage("Name", "Name requires input");
         
         var_dump($msg->getAllMessages());
