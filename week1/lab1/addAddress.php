@@ -35,10 +35,17 @@ and open the template in the editor.
         <?php
         
         require_once 'functions/dbconnect.php';
-        require_once 'functions/until.php';
+        require_once 'functions/util.php';
         
         
-        $name = filter_input(INPUT_POST, 'name');
+        //validation for zip code
+        $zipregex = "/^([0-9]{5})(-[0-9]{4})?$/i";
+        //validation for fullname
+        $regex = '/^[A-Z0-9 _]*$/'; 
+        
+        $message;
+        
+        $name = filter_input(INPUT_POST, 'fullname');
         $email = filter_input(INPUT_POST, 'email');
         $address = filter_input(INPUT_POST, 'address');
         $city = filter_input(INPUT_POST, 'city');
@@ -46,13 +53,11 @@ and open the template in the editor.
         $zip = filter_input(INPUT_POST, 'zip');
         $birthday = filter_input(INPUT_POST, 'birthday');
         
-       
-        
-        //$pattern = '^\d{5}([\-]?\d{4})?$';
-        
-        $addresses = getAllAddress();
-        
+         
+        //set the values to the variables
         if (isset($_POST['submit'])) {
+            //validation for name
+            $validation = " ";
             
             $name = $_POST['fullname'];
             $email = $_POST['email'];
@@ -61,41 +66,103 @@ and open the template in the editor.
             $state = $_POST['state'];
             $zip = $_POST['zip'];
             $birthday = $_POST['birthday'];
-            //if( empty($name) ) {
-                //$message = 'Sorry Name is Empty';
-            //}
-            //else if ( empty($email) ) {
-                //$message = 'Sorry Email is Empty';
-            //} 
-            
-             // code to validate email and zip code
-        if(filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            echo "Valid Email";
-        }
-        else {
-            echo "Invalid email, please try again";
-        }
+           
+        } //end of if ISSET POST statement for variable validation before processing 
+                 // code to validate email and zip code
+                //if(filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                //echo "Valid Email <br />"  
         
-        //if (preg_match($pattern, $zip) === 1) {
-          //  echo "Zip Code is Valid";
-        //}
-        
-            if (addAddress($name, $email, $address, $city, $state, $zip, $birthday) ) {
-                $message = 'Address Added';
+        if (isset($_POST['submit'])){
+            if(empty($name)){
+                echo "You didn't enter a name!";
+                $validation = "False";
+            }
+            else if(preg_match($regex, $name)){
+                
+            }
+            else{
+                echo "invalid name!";
+            }
+
+            if(empty($email)){
+                echo "You didn't enter a email!";
+                $validation = "False";
+            }
+            else if(filter_var($email, FILTER_VALIDATE_EMAIL)){
+                
+            }
+            else{
+                echo "invalid email please try again!";
+            }
+
+            if(empty($address)){
+                echo "You didn't enter a address!";
+                $validation = "False";
+            }
+            else if(preg_match($regex, $address)){
+                
+            }
+            else{
+                echo "Invalid address!";
+            }
+
+            if(empty($city)){
+                echo "You didn't enter a city!";
+                $validation = "False";
+            }
+            else if(preg_match($regex, $city)){
+                
             }
             else {
-                $message = 'There was an error! Check your input and try again.';
+                echo "invalid city!";
+            }
+
+            if(empty($state)){
+                echo "you didn't enter a state!";
+                $validation = "False";
+            }
+            else if(preg_match($regex, $state)){
+                
+            }
+            else{
+                echo "invalid state!";
             }
             
-        }//end if PostRequest
+            if(empty($zip)){
+                echo "you didn't enter a zip!";
+                $validation = "False";
+            }
+            else if(preg_match($zipregex, $zip)){
+                
+            }
+            else {
+                echo "Invalid zip!";
+            }
+            
+            if(empty($birthday)){
+                echo "you didn't enter birthday!";
+                $validation = "False";
+            }
+        }//end of variable validation
         
+        
+        // if the values are set then check if zip is valid and email is valid
+            if(isset($_POST['submit']) && $validation != "False"){
+                try {
+                    addAddress($name, $email, $address, $city, $state, $zip, $birthday); 
+                    echo 'Address Added';
+                }
+                catch(PDOException $e){
+                    echo 'There was an error please check your code.';
+                }
+            }//end validation if
         ?>
         
         
         <!-- code to input address into database and display message based on success -->
         
-         <?php if ( isset($message) ) : ?>
-    <p class="bg-success"><?php echo $message; ?></p>
+      <?php if ( isset($message) ) : ?>
+        <p class="bg-success"><?php echo $message; ?></p>
       <?php endif; ?>
         
     <div class="container">
@@ -106,7 +173,7 @@ and open the template in the editor.
        Address: <input name="address" value="<?php echo $address; ?>" /> <br />
        City: <input name="city" value="<?php echo $city; ?>" /> <br />
        State: <input name="state" value="<?php echo $state; ?>" /> <br />
-       Zip: <input name="zip" value="<?php echo $zip; ?>" /> <br />
+       Zip: <input name="zip" value="<?php echo $zip;?>" /> <br />
        Birthday: <input type="date" name="birthday" value="<?php echo $birthday; ?>" /> <br />
        <input type="submit" value="submit" name="submit" class="btn btn-primary" />
     </form>

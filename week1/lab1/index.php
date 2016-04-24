@@ -36,7 +36,7 @@ and open the template in the editor.
         <?php
         
         require_once 'functions/dbconnect.php';
-        require_once 'functions/until.php';
+        require_once 'functions/util.php';
         
         
         $name = filter_input(INPUT_POST, 'name');
@@ -53,17 +53,18 @@ and open the template in the editor.
     
         <!-- code to display all addresses in the database -->
         
-    <?php if ( count($addresses) > 0 ) : ?>
+<?php if ( count($addresses) > 0 ) : ?>
 <h1 class="info">Addresses</h1>
 <ul class="nav nav-pills nav-stacked">
 <?php foreach( $addresses as $key => $values ) : ?>
+    <li role="presentation" class="disabled"><a href="#">Address # <?php echo $key + 1 ?> </a><li>
     <li role="presentation" class="disabled"><a href="#">Full Name: <?php echo $values['fullname']; ?> </a><li>
     <li role="presentation" class="disabled"><a href="#">Email: <?php echo $values['email']; ?></a> <li>
     <li role="presentation" class="disabled"><a href="#">Address: <?php echo $values['addressline1']; ?></a> </li>
     <li role="presentation" class="disabled"><a href="#">City: <?php echo $values['city']; ?></a> </li>
     <li role="presentation" class="disabled"><a href="#"> State: <?php echo $values['state']; ?> </a></li>
     <li role="presentation" class="disabled"><a href="#"> Zip: <?php echo $values['zip']; ?></a> </li>
-    <li role="presentation" class="disabled"> <a href="#">Birthday: <?php echo $values['brithday']; ?> </a></li>
+    <li role="presentation" class="disabled"> <a href="#">Birthday: <?php echo $values['birthday']; ?> </a></li>
     <br />
 <?php endforeach; ?>
 </ul>
