@@ -19,7 +19,7 @@ class address {
     return ( filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST' );
 }
 
-    function addMessage($name, $email, $address, $city, $state, $zip, $birthday) {
+    function addAddress($name, $email, $address, $city, $state, $zip, $birthday) {
         
     $newConnection = new db();
     
@@ -48,7 +48,7 @@ class address {
                
     
     return $db->exec($query);
-}
+}//end function addmessage
 
     function getAllAddress() {
     
