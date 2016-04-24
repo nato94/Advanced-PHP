@@ -12,7 +12,7 @@ function isPostRequest() {
     return ( filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST' );
 }
 
-function addMessage($name, $email, $address, $city, $state, $zip, $birthday) {
+function addAddress($name, $email, $address, $city, $state, $zip, $birthday) {
     
     $db = dbconnect();
     $query = "INSERT INTO address VALUES (NULL, :name, :email, :address, :city, :state, :zip, :birthday)";
