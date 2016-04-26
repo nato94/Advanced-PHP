@@ -1,76 +1,106 @@
-
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 <html>
     <head>
          <meta charset="UTF-8">
-        <title>Assignment 1</title>
+        <title>Assignment 3</title>
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <!-- Optional theme -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-        
-        <style>
-            nav li {
-                list-style-type: none;
-            }
-        </style>
+        <!-- call the main css file that has all the style -->
+        <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
         
-         <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container">
-            <li><a href="index.php">Home</a></li>
-            <li><a href="addAddress1.php">Add an Address</a></li>
-            </div>
-        </nav>
-        <br />
-        <br />
-        <br />
-   
-    
-    
         <?php
         
-        require_once './autoload.php';
-        
-        
-        $name = filter_input(INPUT_POST, 'name');
-        $email = filter_input(INPUT_POST, 'email');
-        $address = filter_input(INPUT_POST, 'address');
-        $city = filter_input(INPUT_POST, 'city');
-        $state = filter_input(INPUT_POST, 'state');
-        $zip = filter_input(INPUT_POST, 'zip');
-        $birthday = filter_input(INPUT_POST, 'birthday');
-        
-        $NewAddress = new address();
-       
-        $addresses = $NewAddress->getAllAddress();
-        
+        //call autoload class to load all classes for the page
+        require_once './models/autoload.php';
         ?>
         
-    
-        <!-- code to display all addresses in the database -->
         
-    <?php if ( count($addresses) > 0 ) : ?>
-<h1 class="info">Addresses</h1>
-<ul class="nav nav-pills nav-stacked">
-<?php foreach( $addresses as $key => $values ) : ?>
-    <li role="presentation" class="disabled"><a href="#">Full Name: <?php echo $values['fullname']; ?> </a><li>
-    <li role="presentation" class="disabled"><a href="#">Email: <?php echo $values['email']; ?></a> <li>
-    <li role="presentation" class="disabled"><a href="#">Address: <?php echo $values['addressline1']; ?></a> </li>
-    <li role="presentation" class="disabled"><a href="#">City: <?php echo $values['city']; ?></a> </li>
-    <li role="presentation" class="disabled"><a href="#"> State: <?php echo $values['state']; ?> </a></li>
-    <li role="presentation" class="disabled"><a href="#"> Zip: <?php echo $values['zip']; ?></a> </li>
-    <li role="presentation" class="disabled"> <a href="#"> Birthday: <?php echo $values['brithday']; ?> </a></li>
-    <br />
-<?php endforeach; ?>
-</ul>
-<?php endif; ?>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <a class="navbar-brand" href="index.php">Assignment 3</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="index.php">Home<span class="sr-only">(current)</span></a></li>
+        <li><a href="signup.php">Sign-up<span class="sr-only">(current)</span></a></li>
+        <!-- if the login session is set and equals to true then display the link for the administrator -->
+        <?php if(isset($_SESSION["logged-in"]) && $_SESSION["logged-in"] == "True"): ?>
+        <li><a href="admin.php">Administrator<span class="sr-only">(current)</span></a></li>
+        <?php endif; ?>
+        <li><span class="sr-only">(current)</span></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+        <br />
+        <br />
+        <div class="container">
+        <h1 class="page-header">Home Page</h1>
         
+        <?php
+        
+        $util = new util();        
+        $login = new login();   
+        $database = new db();
+        //setup database connection
+        $database->dbconnect();
+        
+        $email = filter_input(INPUT_POST, 'email');
+        $password = filter_input(INPUT_POST, 'password');
+        
+        if ($util->isPostRequest()) {
+            
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        //$hash = password_hash($password, PASSWORD_DEFAULT);
+            
+            
+        if(filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            
+            echo "Valid Email. <br />";
+            
+            if($login->LoginUser($email, $password)==true) {
+                session_start();
+                $_SESSION['logged-in'] = "True";
+                echo "logged in. <br />";
+                $util->redirect("admin.php");
+            }
+            else {
+                echo "couldn't log in. <br />";
+            }
+        }//end email validation
+        
+        else {
+            echo "Invalid email, please try again";
+        }
+       
+            //if ($login)  {
+              //  $message = 'Address Added';
+            //}
+            //else {
+              //  $message = 'There was an error! Check your input and try again.';
+            //}
+            
+        }//end if PostRequest
+        
+
+        
+       ?>
+   
+    <h1>Login</h1>
+    <form action="index.php" method="post">   
+       Email: <input name="email" placeholder="Email@myemail.com" value="<?php echo $email; ?>" /> <br />
+       Password: <input name="password" placeholder="password1" /> <br />
+       <input id="loginBtn" type="Submit" value="Submit" name="submit" class="btn btn-primary" />
+    </form>
+    </div>
+ 
     </body>
 </html>

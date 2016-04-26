@@ -1,0 +1,39 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Apr 25, 2016, 7:16:30 PM
+    Author     : Nato
+*/
+
+/*index styles*/
+
+body {
+    background-image: url("weather.png");
+    background-repeat: repeat;
+    color: #F08080;
+}
+
+h1, p, a, li{
+    color: #F08080;
+}
+
+nav li {
+    list-style-type: none;
+    display: block;
+}
+            
+.page-header {
+    text-align: center;
+    text-decoration: none;
+}
+            
+/*admin css*/
+#logoutBtn {
+    display: block;
+    position: relative;
+    top: 100px;
+    left: 600px;
+}
