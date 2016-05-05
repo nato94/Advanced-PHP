@@ -33,14 +33,21 @@ and open the template in the editor.
    
     <h1>Add an Address!</h1>
         <?php
-        
-         require_once './autoload.php';
+        //includes and requires for classes and messages
+         require_once './models/autoload.php';
+         include('./SuccessMessage.html.php'); 
+         include('./ErrorMessage.html.php');
          
-         $NewAddress = new address();
-       
-       $database = new db();
-       
+       $NewAddress = new address(); 
+       $database = new db();      
        $database->dbconnect();
+       $validate = new validation();
+       $util = new util();
+       
+       /*validation for fullname*/
+        $regex = '/^[A-Z0-9 _]*$/';
+        /*validation for zip code*/
+        $zipregex = "/^([0-9]{5})(-[0-9]{4})?$/i";
         
         
         $name = filter_input(INPUT_POST, 'fullname');
@@ -50,21 +57,8 @@ and open the template in the editor.
         $state = filter_input(INPUT_POST, 'state');
         $zip = filter_input(INPUT_POST, 'zip');
         $birthday = filter_input(INPUT_POST, 'birthday');
-        
-                //validation for zip code
-        $zipregex = "/^([0-9]{5})(-[0-9]{4})?$/i";
-        //validation for fullname
-        $regex = '/^[A-Z0-9 _]*$/'; 
         
         $message;
-        
-        $name = filter_input(INPUT_POST, 'fullname');
-        $email = filter_input(INPUT_POST, 'email');
-        $address = filter_input(INPUT_POST, 'address');
-        $city = filter_input(INPUT_POST, 'city');
-        $state = filter_input(INPUT_POST, 'state');
-        $zip = filter_input(INPUT_POST, 'zip');
-        $birthday = filter_input(INPUT_POST, 'birthday');
         
          
         //set the values to the variables
@@ -86,87 +80,60 @@ and open the template in the editor.
                 //echo "Valid Email <br />"  
         
         if (isset($_POST['submit'])){
-            if(empty($name)){
-                echo "You didn't enter a name!";
-                $validation = "False";
+            if(!$validate->notEmpty($name)){
+                 $ErrorMessage[] = "You didn't enter your name!";
             }
-            else if(preg_match($regex, $name)){
+            
+            //validation for email
+            if($validate->ValidEmail($email)){
                 
             }
             else{
-                echo "invalid name!";
+                $ErrorMessage[] = "You didn't enter a valid email!";
             }
-
-            if(empty($email)){
-                echo "You didn't enter a email!";
-                $validation = "False";
+            
+            //validation for address
+            if(!$validate->notEmpty($address)){
+                $ErrorMessage[] = "You didn't enter an address!";
             }
-            else if(filter_var($email, FILTER_VALIDATE_EMAIL)){
-                
+            
+            //validation for city
+            if(!$validate->notEmpty($city)){
+               $ErrorMessage[] = "You didn't enter a city!";
             }
-            else{
-                echo "invalid email please try again!";
+            
+            //validation for state
+            if(!$validate->notEmpty($state)){
+                $ErrorMessage[] = "You didn't enter a state!";
             }
-
-            if(empty($address)){
-                echo "You didn't enter a address!";
-                $validation = "False";
-            }
-            else if(preg_match($regex, $address)){
-                
-            }
-            else{
-                echo "Invalid address!";
-            }
-
-            if(empty($city)){
-                echo "You didn't enter a city!";
-                $validation = "False";
-            }
-            else if(preg_match($regex, $city)){
+            
+            //validation for zip code
+            if($validate->ValidZip($zip, $zipregex)){
                 
             }
             else {
-                echo "invalid city!";
-            }
-
-            if(empty($state)){
-                echo "you didn't enter a state!";
-                $validation = "False";
-            }
-            else if(preg_match($regex, $state)){
-                
-            }
-            else{
-                echo "invalid state!";
+                $ErrorMessage[] = "Invalid zip code!";
             }
             
-            if(empty($zip)){
-                echo "you didn't enter a zip!";
-                $validation = "False";
-            }
-            else if(preg_match($zipregex, $zip)){
+            //validation to check if birthday is empty
+            if($validate->ValidBirthday($birthday)){
                 
             }
             else {
-                echo "Invalid zip!";
+                $ErrorMessage[] = "You Forgot to enter a Birthday!";
             }
             
-            if(empty($birthday)){
-                echo "you didn't enter birthday!";
-                $validation = "False";
-            }
         }//end of variable validation
         
         
         // if the values are set then check if zip is valid and email is valid
-            if(isset($_POST['submit']) && $validation != "False"){
+            if(isset($_POST['submit']) && !isset($ErrorMessage)){
                 try {
-                    addAddress($name, $email, $address, $city, $state, $zip, $birthday); 
-                    echo 'Address Added';
+                    $NewAddress->addAddress($name, $email, $address, $city, $state, $zip, $birthday); 
+                    $SuccessMessage = 'Address Added';
                 }
                 catch(PDOException $e){
-                    echo 'There was an error please check your code.';
+                    $ErrorMessage[] = 'There was an error please check your code.';
                 }
             }//end validation if
         ?>
@@ -174,9 +141,11 @@ and open the template in the editor.
         
         <!-- code to input address into database and display message based on success -->
         
-         <?php if ( isset($message) ) : ?>
-    <p class="bg-success"><?php echo $message; ?></p>
-      <?php endif; ?>
+        
+         <?php  
+         include('./SuccessMessage.html.php'); 
+         include('./ErrorMessage.html.php');
+         ?>
         
     <div class="container">
     <h1>Add Address</h1>

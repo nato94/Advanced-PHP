@@ -35,7 +35,7 @@ and open the template in the editor.
     
         <?php
         
-        require_once './autoload.php';
+        require_once './models/autoload.php';
         
         
         $name = filter_input(INPUT_POST, 'name');
@@ -49,6 +49,7 @@ and open the template in the editor.
         $NewAddress = new address();
        
         $addresses = $NewAddress->getAllAddress();
+        $util = new util();
         
         ?>
         
@@ -65,7 +66,7 @@ and open the template in the editor.
     <li role="presentation" class="disabled"><a href="#">City: <?php echo $values['city']; ?></a> </li>
     <li role="presentation" class="disabled"><a href="#"> State: <?php echo $values['state']; ?> </a></li>
     <li role="presentation" class="disabled"><a href="#"> Zip: <?php echo $values['zip']; ?></a> </li>
-    <li role="presentation" class="disabled"> <a href="#"> Birthday: <?php echo $values['brithday']; ?> </a></li>
+    <li role="presentation" class="disabled"> <a href="#"> Birthday: <?php echo $values['birthday']; ?> </a></li>
     <br />
 <?php endforeach; ?>
 </ul>

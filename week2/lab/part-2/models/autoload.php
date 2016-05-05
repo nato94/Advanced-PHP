@@ -4,6 +4,6 @@
  * without having to include them on the page. 
  */
 function load_lib($class) {
-    include './'.$class . '.php';
-};
+    include './models/'.$class . '.php';
+}
 spl_autoload_register('load_lib');
