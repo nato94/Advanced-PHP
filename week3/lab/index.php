@@ -31,7 +31,7 @@
         <li class="active"><a href="index.php">Home<span class="sr-only">(current)</span></a></li>
         <li><a href="signup.php">Sign-up<span class="sr-only">(current)</span></a></li>
         <!-- if the login session is set and equals to true then display the link for the administrator -->
-        <?php if(isset($_SESSION["logged-in"]) && $_SESSION["logged-in"] == "True"): ?>
+        <?php if(isset($_SESSION["logged-in"]) && $_SESSION["logged-in"] == true): ?>
         <li><a href="admin.php">Administrator<span class="sr-only">(current)</span></a></li>
         <?php endif; ?>
         <li><span class="sr-only">(current)</span></li>
@@ -49,17 +49,25 @@
         $util = new util();        
         $login = new login();   
         
+         $values = filter_input_array(INPUT_POST);
+        
         $email = filter_input(INPUT_POST, 'email');
         $password = filter_input(INPUT_POST, 'password');
-        var_dump($_POST);
         
         if ($util->isPostRequest()) {
-            var_dump("I'm here");
             
             if($login->LoginUser($email, $password) == true) {
+                if($login->get_user_id($values) != false){ //checkin if userid matches email 
+                        $userid = $login->get_user_id($values); // setting the useid from the database to the a variable named userid
+                        $_SESSION['userid'] = $userid;// setting user id session
+                        $_SESSION['email'] = $email;
+                      }
+                      
                 $_SESSION['logged-in'] = true;
                 $util->redirect("admin.php");
+                
             }
+            
             else {
                 $ErrorMessage[] = "couldn't log in. Check your email and password. <br />";
             }
