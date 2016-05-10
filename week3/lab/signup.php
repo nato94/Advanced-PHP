@@ -29,7 +29,10 @@
       <ul class="nav navbar-nav">
         <li><a href="index.php">Home<span class="sr-only">(current)</span></a></li>
         <li class="active"><a href="signup.php">Sign-up<span class="sr-only">(current)</span></a></li>
+        <!-- if the login session is set and equals to true then display the link for the administrator -->
+        <?php if(isset($_SESSION["logged-in"]) && $_SESSION["logged-in"] == "True"): ?>
         <li><a href="admin.php">Administrator<span class="sr-only">(current)</span></a></li>
+        <?php endif; ?>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
@@ -55,8 +58,6 @@
         
         if ($util->isPostRequest()) {
 
-            $email = $_POST['email'];
-            $password = $_POST['password'];
             $hash = password_hash($password, PASSWORD_DEFAULT);
             $created = date("Y-m-d H:i:s");
        }//end if PostRequest

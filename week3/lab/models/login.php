@@ -7,6 +7,7 @@
  */
 class login {
     //put your code here
+    
 
      function LoginUser($email, $password){       
         $connection = new db();       
@@ -30,7 +31,7 @@ class login {
         if($stmt->execute() && $stmt->rowCount() > 0){
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
             $userPassword = $user['password'];
-            echo $userPassword;
+            var_dump($userPassword);
             return password_verify($password, $userPassword);      
         }
         else{

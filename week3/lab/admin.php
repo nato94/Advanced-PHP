@@ -14,6 +14,15 @@
         <?php
         //call autoload class to load all classes for the page
         require_once './models/autoload.php';
+        
+        if($_SESSION['logged-in'] != true){
+            header("Location: index.php");
+            die();
+        }
+        else{
+            $SuccessMessage = "Welcome to the Admin Page!";
+        }
+        
         ?>
         
         
@@ -36,7 +45,7 @@
 </nav>
         <br />
         <br />
-        
+        <?php include('./SuccessMessage.html.php');?>
         <h1 class="page-header">Administrator Page</h1>
         
         <!-- <input id="logoutBtn" class="btn btn-primary" type="submit" value="logout" name="logout" OnClick="logout.php"/> -->

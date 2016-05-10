@@ -45,60 +45,38 @@
         <h1 class="page-header">Home Page</h1>
         
         <?php
-        
+        session_start();
         $util = new util();        
         $login = new login();   
-        $database = new db();
-        //setup database connection
-        $database->dbconnect();
         
         $email = filter_input(INPUT_POST, 'email');
         $password = filter_input(INPUT_POST, 'password');
+        var_dump($_POST);
         
         if ($util->isPostRequest()) {
+            var_dump("I'm here");
             
-        $email = $_POST['email'];
-        $password = $_POST['password'];
-        //$hash = password_hash($password, PASSWORD_DEFAULT);
-            
-            
-        if(filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            
-            echo "Valid Email. <br />";
-            
-            if($login->LoginUser($email, $password)==true) {
-                session_start();
-                $_SESSION['logged-in'] = "True";
-                echo "logged in. <br />";
+            if($login->LoginUser($email, $password) == true) {
+                $_SESSION['logged-in'] = true;
                 $util->redirect("admin.php");
             }
             else {
-                echo "couldn't log in. <br />";
+                $ErrorMessage[] = "couldn't log in. Check your email and password. <br />";
             }
-        }//end email validation
-        
-        else {
-            echo "Invalid email, please try again";
-        }
-       
-            //if ($login)  {
-              //  $message = 'Address Added';
-            //}
-            //else {
-              //  $message = 'There was an error! Check your input and try again.';
-            //}
+
             
         }//end if PostRequest
         
-
+        include('./SuccessMessage.html.php');
+        include('./ErrorMessage.html.php');
         
        ?>
    
     <h1>Login</h1>
-    <form action="index.php" method="post">   
-       Email: <input name="email" placeholder="Email@myemail.com" value="<?php echo $email; ?>" /> <br />
-       Password: <input name="password" placeholder="password1" /> <br />
-       <input id="loginBtn" type="Submit" value="Submit" name="submit" class="btn btn-primary" />
+    <form action="#" method="post">  
+       Email: <input type="text" name="email" placeholder="Email@myemail.com" value="<?php echo $email; ?>" /> <br />
+       Password: <input type="text" name="password" placeholder="password1" /> <br />
+       <input id="loginBtn" type="submit" value="Submit" class="btn btn-primary" />
     </form>
     </div>
  
