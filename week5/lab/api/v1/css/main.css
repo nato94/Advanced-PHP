@@ -1,0 +1,26 @@
+body {
+     background-image: url("restaurant.png");
+        background-repeat: repeat;
+        color: white;
+} 
+input{
+    position: relative;
+    left:40%;
+    border: 2px solid #ccc;
+}
+p, h2, button, select{
+    position:relative;
+    left:40%;
+}
+
+textArea{
+    position: relative;
+    left:40%;
+    width: 20%;     
+}
+textArea[name="results"]{
+    position: relative;
+    left:30%;
+    height: 300px;
+    width: 400px;
+}
