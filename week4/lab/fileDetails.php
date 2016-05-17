@@ -83,7 +83,7 @@ if (!is_file($folder . DIRECTORY_SEPARATOR . $fileName)){
                 <?php endif; ?><br>
                 
                 <?php if($fileExt == 'doc' || $fileExt =='docx' || $fileExt == 'xls' ||  $fileExt == 'xlsx' ||  $fileExt == 'html'): ?>
-                    <object src="'+<?php echo "./uploads/$fileName" ?>+'"><embed src="'+<?php "./uploads/$fileName" ?>+'"></embed></object>
+                   <a href="<?php echo $filePath ?>">click to download</a>
                 <?php endif; ?><br>
                   
             
