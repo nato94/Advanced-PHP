@@ -91,10 +91,9 @@
                 <?php endif; ?><br>
                 
                 <?php if($fileExt == 'doc' || $fileExt =='docx' || $fileExt == 'xls' ||  $fileExt == 'xlsx' ||  $fileExt == 'html'): ?>
-                    <object src="'+<?php echo $filePath ?>+'"><embed src="'+<?php $filePath ?>+'"></embed></object>
+                    <a href="<?php echo $filePath ?>">click to download</a>
                 <?php endif; ?><br>
-                 
-                  
+                    
             </div> <!-- end file div -->
                     
                     
@@ -103,6 +102,6 @@
                 <?php $count++; endif;?>
             <?php endif; ?>
         <?php endforeach; ?>
-                
+        </div>
     </body>
 </html>
