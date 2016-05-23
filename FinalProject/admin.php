@@ -50,10 +50,11 @@
         <li><a href="index.php">Home<span class="sr-only">(current)</span></a></li>
         <li><a href="sign-in.php">Sign-in<span class="sr-only">(current)</span></a></li>
         <li><a href="signup.php">Sign-up<span class="sr-only">(current)</span></a></li>
-        <li><a href="uploadPage.php">Upload<span class="sr-only">(current)</span></a></li>
         <!-- if the login session is set and equals to true then display the link for the administrator -->
         <?php if(isset($_SESSION["logged-in"]) && $_SESSION["logged-in"] == true): ?>
         <li class="active"><a href="admin.php">Administrator<span class="sr-only">(current)</span></a></li>
+        <li role="presentation" id="logoutBtn"><a href="logout.php">Logout</a></li>
+        <li><a href="uploadPage.php">Upload<span class="sr-only">(current)</span></a></li>
         <?php endif; ?>
         <li><span class="sr-only">(current)</span></li>
       </ul>
@@ -65,10 +66,8 @@
         <?php include('./SuccessMessage.html.php');?>
         <?php include('./ErrorMessage.html.php');?>
         <h1 class="page-header">Administrator Page</h1>
+
         
-        <?php
-            echo "user id: "; echo $_SESSION['userid']; echo '<br />';
-        ?>
         
         <!-- <input id="logoutBtn" class="btn btn-primary" type="submit" value="logout" name="logout" OnClick="logout.php"/> -->
         
@@ -81,6 +80,10 @@
         
         $userMemes = $login->getUserMemes($_SESSION['userid']);
         $folder = './uploads';
+        
+        if(is_null($userMemes)){
+            echo "No User Meme's found.";
+        }
         
         //add new instance of the DirectoryIterator class in order to get extensions and test to see which file is which and address accordingly
         $directory = new DirectoryIterator($folder);
