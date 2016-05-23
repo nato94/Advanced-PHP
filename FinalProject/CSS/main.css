@@ -1,0 +1,32 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : May 20, 2016, 2:44:56 PM
+    Author     : Nato
+*/
+
+body{ 
+    background-image: url("birds.png");
+    background-repeat: repeat;
+}
+
+.page-header {
+    text-align: center!important;
+}
+
+#memeTopText {
+    position: relative;
+    left: 150px;
+    top: 50px;
+    color: white;
+}
+
+#memeBottomText {
+    position: relative;
+    bottom: 50px;
+    left: 150px;
+    color: white;
+}
