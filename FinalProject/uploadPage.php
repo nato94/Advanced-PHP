@@ -14,6 +14,8 @@
         <?php
         //call autoload class to load all classes for the page
         require_once './models/autoload.php';
+         include('./ErrorMessage.html.php'); 
+            include ('./SuccessMessage.html.php');
         
         $util = new util();
         
@@ -45,9 +47,9 @@
         <li><a href="signup.php">Sign-up<span class="sr-only">(current)</span></a></li>
         <!-- if the login session is set and equals to true then display the link for the administrator -->
         <?php if(isset($_SESSION["logged-in"]) && $_SESSION["logged-in"] == true): ?>
-        <li class="active"><a href="admin.php">Administrator<span class="sr-only">(current)</span></a></li>
+        <li><a href="admin.php">Administrator<span class="sr-only">(current)</span></a></li>
         <li role="presentation" id="logoutBtn"><a href="logout.php">Logout</a></li>
-        <li><a href="uploadPage.php">Upload<span class="sr-only">(current)</span></a></li>
+        <li class="active"><a href="uploadPage.php">Upload<span class="sr-only">(current)</span></a></li>
         <?php endif; ?>
         <li><span class="sr-only">(current)</span></li>
       </ul>

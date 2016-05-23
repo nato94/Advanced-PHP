@@ -29,11 +29,11 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li><a href="index.php">Home<span class="sr-only">(current)</span></a></li>
-        <li><a href="sign-in.php">Sign-in<span class="sr-only">(current)</span></a></li>
+        <li class="active"><a href="sign-in.php">Sign-in<span class="sr-only">(current)</span></a></li>
         <li><a href="signup.php">Sign-up<span class="sr-only">(current)</span></a></li>
         <!-- if the login session is set and equals to true then display the link for the administrator -->
         <?php if(isset($_SESSION["logged-in"]) && $_SESSION["logged-in"] == true): ?>
-        <li class="active"><a href="admin.php">Administrator<span class="sr-only">(current)</span></a></li>
+        <li><a href="admin.php">Administrator<span class="sr-only">(current)</span></a></li>
         <li role="presentation" id="logoutBtn"><a href="logout.php">Logout</a></li>
         <li><a href="uploadPage.php">Upload<span class="sr-only">(current)</span></a></li>
         <?php endif; ?>
@@ -49,7 +49,8 @@
         
         
         <?php
-       
+        include('./ErrorMessage.html.php'); 
+            include ('./SuccessMessage.html.php');
        
        $util = new util();
        
@@ -92,9 +93,15 @@
 
         
     <h1>Login</h1>
-    <form action="#" method="POST">  
-       Email: <input type="text" name="email" placeholder="Email@myemail.com" value="<?php echo $email; ?>" /> <br />
-       Password: <input type="password" name="password" placeholder="password1" /> <br />
+    <form action="#" method="POST"> 
+        <div class="form-group">
+        <label for="email">Email:</label>
+            <input type="text" name="email" placeholder="Email@myemail.com" value="<?php echo $email; ?>" /> <br />
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" name="password" placeholder="password1" /> <br />
+        </div>
        <input id="loginBtn" type="submit" value="Submit" class="btn btn-primary" />
     </form>
  

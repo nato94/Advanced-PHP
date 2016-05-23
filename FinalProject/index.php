@@ -31,12 +31,12 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a href="index.php">Home<span class="sr-only">(current)</span></a></li>
+        <li class="active"><a href="index.php">Home<span class="sr-only">(current)</span></a></li>
         <li><a href="sign-in.php">Sign-in<span class="sr-only">(current)</span></a></li>
         <li><a href="signup.php">Sign-up<span class="sr-only">(current)</span></a></li>
         <!-- if the login session is set and equals to true then display the link for the administrator -->
         <?php if(isset($_SESSION["logged-in"]) && $_SESSION["logged-in"] == true): ?>
-        <li class="active"><a href="admin.php">Administrator<span class="sr-only">(current)</span></a></li>
+        <li><a href="admin.php">Administrator<span class="sr-only">(current)</span></a></li>
         <li role="presentation" id="logoutBtn"><a href="logout.php">Logout</a></li>
         <li><a href="uploadPage.php">Upload<span class="sr-only">(current)</span></a></li>
         <?php endif; ?>
@@ -51,50 +51,35 @@
         <h1 class="page-header">Welcome to Dank MEME's!</h1>
         
         <?php
-       
+       //initialize classes and variables to use
         $util = new util(); 
         $login = new login();
-        
-        
-        
-        //$topText = array();
-        //$bottomText = array();
-        
+         $count = 1;
+         $photo_id = array();
+         $folder = './uploads';
          $values = filter_input_array(INPUT_POST);
-        
-  
                 
-                $views = 0;
-                
+         //if the user id is set then insert it into the variable
                 if(isset($_SESSION['userid'])){
                     $user_id = $_SESSION['userid'];
                 }
-                
-                $created = date("Y-m-d H:i:s");
+include('./SuccessMessage.html.php');
+include('./ErrorMessage.html.php');
         
-        
-        
-        include('./SuccessMessage.html.php');
-        include('./ErrorMessage.html.php');
-        
-       ?>
-        
-        <?php
 
-        $folder = './uploads';
-        
         //add new instance of the DirectoryIterator class in order to get extensions and test to see which file is which and address accordingly
         $directory = new DirectoryIterator($folder);
 
-        $count = 1;
-
-         $photo_id = array();
+       
         ?>
 
+        
         
         <?php foreach ($directory as $file) :?>  
         
         <?php
+        //code to display the memes found in the database 
+        
                     $fileName = $file->getFilename();
                     $fileSize = $file->getSize();
                     $fileDate = date("l F j, Y, g:i a", $file->getMTime());
@@ -108,18 +93,14 @@
                     ?>
         
             <?php 
+            //set variables to the database values for all the memes
                 $fileTopText = $results['topText'];
                 $fileBottomText = $results['bottomText']; 
                 $photo_id[$count-1] = $results['photo_id'];
                 $views = $results['views'];
                 $title = $results['title'];
-                //$photos = $login->getAllPhotoID();
-                //$rand = mt_rand(0, $photo_id[]);
-                
-                 
-                 
-                
-                
+
+
             ?>
         
             <?php if ( is_file($folder . DIRECTORY_SEPARATOR . $file) ) : ?>
@@ -161,10 +142,12 @@
                     $i = rand(0, $count-1);
                 }
 
+                //code for the meme of the moment
                 $memeOfTheDay = $login->getMemeOfTheDay($photo_id[$i]);
                 foreach( $memeOfTheDay as $key => $specialMeme ):?>
                
                <?php 
+               //set variables to database data for the meme of the moment
                $specialMemeTitle = $specialMeme['title'];
                $specialMemeName = $specialMeme['filename']; 
                $specialMemeDate = $specialMeme['created'];
@@ -175,7 +158,7 @@
                
                ?>
                         
-                        
+                 <!-- file div to hold the meme of the moment and the links necessary -->
                  <div id="fileDiv">
                      <h1>Meme Of The Moment!</h1>
                 <h3><?php echo "Title: "; echo $specialMemeTitle; ?></h3>

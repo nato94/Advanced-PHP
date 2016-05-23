@@ -63,8 +63,7 @@
 </nav>
         <br />
         <br />
-        <?php include('./SuccessMessage.html.php');?>
-        <?php include('./ErrorMessage.html.php');?>
+        
         <h1 class="page-header">Administrator Page</h1>
 
         
@@ -81,9 +80,6 @@
         $userMemes = $login->getUserMemes($_SESSION['userid']);
         $folder = './uploads';
         
-        if(is_null($userMemes)){
-            echo "No User Meme's found.";
-        }
         
         //add new instance of the DirectoryIterator class in order to get extensions and test to see which file is which and address accordingly
         $directory = new DirectoryIterator($folder);
@@ -96,7 +92,11 @@
              
                    
                     
-               foreach($userMemes as $key => $results ):    
+               foreach($userMemes as $key => $results ):  
+                   
+                   if(!isset($results['title'])){
+                       $ErrorMessage[] = "No User Memes Found!";
+                   }
                    
                    $title = $results['title'];
                    $fileName = $results['filename'];
@@ -104,8 +104,10 @@
                    $fileBottomText = $results['bottomText'];
                    $fileDate = $results['created'];
                    $views = $results['views'];
+                   
                
                    ?>
+        
         <br/>
          <div id="fileDiv">
                 <h3><?php echo "Title: "; echo $results['title']; ?></h3>
@@ -129,5 +131,8 @@
             </div> <!-- end file div -->
         
                <?php endforeach; ?>
+            
+            <?php include('./SuccessMessage.html.php');?>
+        <?php include('./ErrorMessage.html.php');?>
     </body>
 </html>

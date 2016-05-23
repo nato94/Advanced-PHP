@@ -95,6 +95,7 @@ if (!is_file($folder . DIRECTORY_SEPARATOR . $fileName)){
         <h1 class="page-header">View Details</h1>
         
           <?php include('./ErrorMessage.html.php'); 
+            include ('./SuccessMessage.html.php');
           
           $login = new login();
           $login->updateViews($views, $fileName);
