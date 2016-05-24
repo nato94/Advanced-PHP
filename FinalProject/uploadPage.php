@@ -64,7 +64,7 @@
    
     <h1 class="page-header">Upload File</h1>
     
-    <form enctype="multipart/form-data" action="upload.php" method="POST">   
+    <form enctype="multipart/form-data" action="#" method="POST">   
         <div class="form-group">
             <label for="file">Picture Upload: </label>
             <input type="file" id="file" name="file" /><br />
@@ -77,16 +77,76 @@
         
         <div class="form-group">
             <label for="topText">Top Text: </label>
-            <input type="text" class="form-control" id="topText" name="topText" placeholder="Enter Top Text Here">
+            <input type="text" class="form-control" id="memetop" name="memetop" placeholder="Enter Top Text Here">
         </div>
         
         <div class="form-group">
             <label for="bottomText">Bottom Text: </label>
-            <input type="text" class="form-control" id="bottomText" name="bottomText" placeholder="Enter Bottom Text Here">
+            <input type="text" class="form-control" id="memebottom" name="memebottom" placeholder="Enter Bottom Text Here">
         </div>
-       <input id="loginBtn" type="Submit" value="Upload" name="Upload" class="btn btn-primary" />
+       <input id="loginBtn" type="button" value="Upload" name="upload" class="btn btn-primary" />
     </form>
     </div>
+        <pre id="img-file-content"></pre>
+        <script type="text/javascript"> 
+        
+        var fileUpload = document.querySelector('input[name="file"]');
+        var fileContentPaneImg = document.querySelector('#img-file-content');
+        var memeTopText = document.querySelector('input[name="memetop"]');
+        var memeBottomText = document.querySelector('input[name="memebottom"]');
+        var SubmitBtn = document.querySelector('input[type="button"]');
+        
+         SubmitBtn.addEventListener("click", uploadImage);
+        
+           // Read the contents of a file.
+            function readTexImg(file) {
+                var readerimg = new FileReader();
+                readerimg.onloadend = function (e) {
+                    if(e.target.readyState === FileReader.DONE) {
+                        var img = new Image();
+                        img.src = readerimg.result;
+                        fileContentPaneImg.innerHTML = '';
+                        fileContentPaneImg.appendChild(img);
+                        imageReady = true;
+                        fileToUpload = file;
+                    }
+                };
+                readerimg.readAsDataURL(file);
+            }
+            function uploadImage() {
+                    makeAJAXCall(fileToUpload);
+            }
+               
+            function makeAJAXCall(data) {
+            var verb = 'POST';
+            var url = 'upload2.php';
+            var formData = new FormData();
+            formData.append('upfile', data);
+            formData.append(memeTopText.name, memeTopText.value);
+            formData.append(memeBottomText.name, memeBottomText.value);
+            xmlhttp.open(verb, url, true);
+            xmlhttp.send(formData);
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState === 4) {
+                    var status = (xmlhttp.status === 200 ? "success" : "failure");
+                    var response = JSON.parse(xmlhttp.responseText);
+                    uploadProgress.innerHTML = response.message;
+                    var img = new Image();
+                    img.src = response.location;
+                    fileContentPaneImg.innerHTML = '';
+                    fileContentPaneImg.appendChild(img);
+                } else {
+    // waiting for the call to complete
+                }
+            };
+        }
+        
+        
+        
+             </script>
+
+        
+        
  
     </body>
 </html>
