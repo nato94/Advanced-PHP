@@ -9,6 +9,28 @@
 class photos {
     //put your code here
     
+    function AddPhoto($user_id, $fileName, $title){
+        
+    $connection = new db();
+        
+    $db = $connection->dbconnect();
+        
+    $stmt = $db->prepare("INSERT INTO photos set user_id = :user_id, filename = :filename, title = :title, created = now()");
+
+                $binds = array(
+                    ":user_id" => $user_id,
+                    ":filename" => $fileName,
+                    ":title" => $title
+                );
+            if ($stmt->execute($binds) && $stmt->rowCount() > 0) {
+                return true;
+            }
+            else{
+                return false;
+            }
+        
+    }//end function add photo*/
+    
     function getAllPhotos(){
     
     $newConnection = new db();
@@ -28,24 +50,7 @@ class photos {
     return $results;
     }//end getAllPhotos
     
-    function getMemeText($fileName){
-    
-    $newConnection = new db();
-    
-    $db = $newConnection->dbconnect();
-    
-    $stmt = $db->prepare("SELECT * FROM photos WHERE filename = :fileName");
-    
-        $stmt->bindValue(":fileName", $fileName);
-    
-    $results = array();
-    if ($stmt->execute() && $stmt->rowCount() > 0) {
-       $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-    
-    return $results;
-        
-    }//end get meme text
+
     
     function getUserMemes($userid){
     
@@ -71,22 +76,6 @@ class photos {
  
     }//end get user memes
     
-    function getAllPhotoID(){
-        
-        $newConnection = new db();
-    
-        $db = $newConnection->dbconnect();
-    
-        $stmt = $db->prepare("SELECT * [except user_id, filename, title, topText, bottomText, views, created] FROM photos");
-        
-        $photo_id = array();
-    
-       if($stmt->execute() && $stmt->rowCount() > 0) {
-            $photo_id = $stmt->fetchAll(PDO::FETCH_ASSOC);
-       }
-    
-    return $photo_id;
-    }//end get all photo id's
     
     function getMemeOfTheDay(){
     

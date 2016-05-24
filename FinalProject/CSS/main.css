@@ -16,17 +16,3 @@ body{
 .page-header {
     text-align: center!important;
 }
-
-#memeTopText {
-    position: relative;
-    left: 150px;
-    top: 50px;
-    color: white;
-}
-
-#memeBottomText {
-    position: relative;
-    bottom: 50px;
-    left: 150px;
-    color: white;
-}

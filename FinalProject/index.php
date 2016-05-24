@@ -63,39 +63,29 @@
                 if(isset($_SESSION['userid'])){
                     $user_id = $_SESSION['userid'];
                 }
-include('./SuccessMessage.html.php');
-include('./ErrorMessage.html.php');
+
         
         ?>
 
         
         <!-- php code for getting the meme of the moment -->
             <?php 
-   /*         
-                $i = rand(0, $count-1);
- 
-                while($photos->getMemeOfTheDay($photo_id[$i]) == false){
-                    //$photo = $photo_id[$i];
-                    
-                    $i = rand(0, $count-1);
-                }
-
-                //code for the meme of the moment
-                $memeOfTheDay = $photos->getMemeOfTheDay($photo_id[$i]);
-                foreach( $memeOfTheDay as $key => $specialMeme ):?>*/
+            
+            $directory = new DirectoryIterator("./uploads");
                 $specialMeme = $photos->getMemeOfTheDay();
-               
+        
                //set variables to database data for the meme of the moment
                $specialMemeTitle = $specialMeme['title'];
                $specialMemeName = $specialMeme['filename']; 
                $specialMemeDate = $specialMeme['created'];
                $specialMemeViews = $specialMeme['views'];
-               $specialMemeTopText = $specialMeme['topText'];
-               $specialMemeBottomText = $specialMeme['bottomText'];
-               $specialMemeSize = $specialMeme['size'];
+               $specialMemeSize = $directory->getSize();
                
                ?>
-                        
+                 
+        <?php if(isset($specialMemeName)): ?>
+           
+       
                  <!-- file div to hold the meme of the moment and the links necessary -->
                  <div id="fileDiv">
                      <h1>Meme Of The Moment!</h1>
@@ -103,19 +93,19 @@ include('./ErrorMessage.html.php');
                 <p>uploaded on <?php echo $specialMemeDate; ?></p>
                 <p>File Size: <?php echo $specialMemeSize; ?> byte's</p>      
                 
-                <p id="memeTopText">
-                    <?php echo $specialMemeTopText; ?>
-                </p>
                     <img width="40%" height="40%" src="<?php echo "uploads/$specialMemeName";  ?>" />
-                <p id="memeBottomText">
-                    <?php echo $specialMemeBottomText; ?>
-                </p>
-                <a href="fileDetails.php?fileName=<?php echo $specialMemeName?>&fileSize=<?php echo $specialMemeSize ?>&fileDate=<?php echo $specialMemeDate ?>&fileTopText=<?php echo $specialMemeTopText ?>&fileBottomText=<?php echo $specialMemeBottomText ?>&views=<?php echo $specialMemeViews ?>&title=<?php echo $specialMemeTitle ?>" class="btn btn-default">View File</a>
-                    
-                    
+
             </div> <!-- end file div -->
             
-            <h1>All Other Memes: </h1>
+             <a href="fileDetails.php?fileName=<?php echo $specialMemeName?>&fileSize=<?php echo $specialMemeSize ?>&fileDate=<?php echo $specialMemeDate ?>&fileTopText=<?php echo $specialMemeTopText ?>&fileBottomText=<?php echo $specialMemeBottomText ?>&views=<?php echo $specialMemeViews ?>&title=<?php echo $specialMemeTitle ?>" class="btn btn-default">View File</a>
+            
+            <?php  
+            else:
+                $ErrorMessage[] = "No Meme's found!";
+            endif;
+            ?>
+            
+            
         <?php
         //code to display the memes found in the database 
                     $memeText = $photos->getAllPhotos();
@@ -129,46 +119,33 @@ include('./ErrorMessage.html.php');
             
                 $fileName = $results['filename'];
                 $fileDate = $results['created'];
-                $fileSize = $results['size'];
-                $fileTopText = $results['topText'];
-                $fileBottomText = $results['bottomText']; 
-                $photo_id[$count-1] = $results['photo_id'];
+                $fileSize = $directory->getSize();
                 $views = $results['views'];
                 $title = $results['title'];
 
-
             ?>
        
-                
+                <h1>All Other Memes: </h1>
             <div id="fileDiv">
                 <h3><?php echo "Title: "; echo $title; ?></h3>
                 <p>uploaded on <?php echo $fileDate; ?></p>
                 <p>This file is <?php echo $fileSize; ?> byte's</p>
                       
                 
-                <p id="memeTopText">
-                    <?php echo $fileTopText; ?>
-                </p>
                     <img width="40%" height="40%" src="<?php echo  "uploads/$fileName";  ?>" />
-                <p id="memeBottomText">
-                    <?php echo $fileBottomText; ?>
-                </p>
-                    
                     
                     
             </div> <!-- end file div -->
-           
-                    
-                    
                 
                <a href="fileDetails.php?fileName=<?php echo $fileName?>&fileSize=<?php echo $fileSize ?>&fileDate=<?php echo $fileDate ?>&fileTopText=<?php echo $fileTopText ?>&fileBottomText=<?php echo $fileBottomText ?>&views=<?php echo $views ?>&title=<?php echo $title ?>" class="btn btn-default">View File</a>
 
                 <?php $count++;?>
-        <?php endforeach; ?>
-               
-               
+        <?php endforeach; 
+
+               include('./SuccessMessage.html.php');
+               include('./ErrorMessage.html.php');
                 
-               
+               ?>
             
                 
     

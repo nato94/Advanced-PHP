@@ -1,4 +1,4 @@
-<?php
+ <?php
 header("Access-Control-Allow-Orgin: *");
 header("Content-Type: application/json; charset=utf8");
 $status_codes = array(
@@ -8,26 +8,11 @@ $status_codes = array(
 $status = 200;
 /*
  * make sure php_fileinfo.dll extension is enable in php.ini
+ * 
  */
-function AddPhoto($user_id, $fileName, $title, $views, $created){
-        
-            $connection = new db();
-        
-            $db = $connection->dbconnect();
-        
-            $query = "INSERT INTO photos (user_id, filename, title, topText, bottomText, size, views, created) VALUES (:user_id, :filename, :title, :topText, :bottomText, :size, :views, :created)";
-    
-                $stmt = $db->prepare($query);
-                $stmt->bindValue(':user_id', $user_id);
-		$stmt->bindValue(':filename', $fileName);	
-                $stmt->bindValue(':title', $title);
-                $stmt->bindValue(':views', $views);
-                $stmt->bindValue(':created', $created);
-		$stmt->execute();
+session_start();
+require_once './models/autoload.php';
 
-                return $db->exec($query);
-        
-            }//end function add photo*/
 
 try {
 // Undefined | Multiple Files | $_FILES Corruption Attack
@@ -68,6 +53,7 @@ try {
     /* Alternative to getting file extention */
     $name = $_FILES["upfile"]["name"];
     $ext = strtolower(end((explode(".", $name))));
+    
     if (preg_match("/^(jpeg|jpg|png|gif)$/", $ext) == false) {
         throw new RuntimeException('Invalid file format.');
     }
@@ -114,6 +100,8 @@ try {
     }
     $image_p = imagecreatetruecolor($max_width, $max_height);
     imagecopyresampled($image_p, $rImg, 0, 0, 0, 0, $max_width, $max_height, $image_width, $image_height);
+    $user_id = filter_input(INPUT_POST, 'ID');
+    $title = filter_input(INPUT_POST, 'memeTitle');
     $memetop = filter_input(INPUT_POST, 'memetop');
     $memebottom = filter_input(INPUT_POST, 'memebottom');
 //Font Color (white in this case)
@@ -161,13 +149,22 @@ try {
     imagedestroy($rImg);
     imagedestroy($image_p);
     
-    AddPhoto($user_id, $fileName, $title, $views, $created);
+    $filename = "$fileName.$ext";
+    $photos = new photos();
+    
+    if($photos->AddPhoto($user_id, $filename, $title)){
+       $message = 'File is uploaded successfully.';
+    }
+    else{
+        throw new Exception("Couldn't upload photo to database!");
+    }
+    
     /*
       if ( !move_uploaded_file( $_FILES["upfile"]["tmp_name"], $location) ) {
         throw new RuntimeException('Failed to move uploaded file.');
       }
      */
-    $message = 'File is uploaded successfully.';
+    
 } catch (RuntimeException $e) {
     $message = $e->getMessage();
     $status = 500;

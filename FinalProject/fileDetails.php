@@ -38,23 +38,6 @@ session_start();
         <style>
             
             
-            
-            #memeTopText {
-    position: relative;
-    left: 400px;
-    top: 50px;
-    color: white;
-    font-size: 20px;
-}
-
-#memeBottomText {
-    position: relative;
-    bottom: 50px;
-    left: 400px;
-    color: white;
-    font-size: 20px;
-}
-            
         </style>
     </head>
     <body>
@@ -103,18 +86,15 @@ session_start();
                 <p>This file is <?php echo $fileSize; ?> byte's</p>
                 <p>Views: <?php echo $views; ?></p>
         
-                        
-                  <p id="memeTopText">
-                    <?php echo $fileTopText; ?>
-                </p>
                     <img width="100%" height="100%" src="<?php echo "uploads/$fileName";  ?>" />
-                <p id="memeBottomText">
-                    <?php echo $fileBottomText; ?>
-                </p>
             
             </div> <!-- end file div -->
+            <a id="dltButton" href="delete.php?filename=<?php echo $fileName; ?>" class="btn btn-default">Delete File</a> 
             
         </div> <!-- end container div  -->
+        
+        <br />
+        <br />
         
     </body>
 </html>

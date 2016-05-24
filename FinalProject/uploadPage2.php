@@ -4,7 +4,13 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title></title>
+        <title>Final Project</title>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+        <!-- call the main css file that has all the style -->
+        <link rel="stylesheet" href="css/main.css">
 
         <style type="text/css"> 
             #files-img {
@@ -23,23 +29,76 @@
             #img-file-content img {
                 max-width: 100%;
             }
+            
+            #uploadForm{
+                position: relative;
+                left: 500px;
+            }
         </style>
+        
     </head>
     <body>
-        <h2>Image Files</h2>
-        <p>
-            <a href="admin.php">View Images</a>
-        </p>
-        <p>
-        <form>
-            <input type="text" placeholder="Meme Top text" name="memetop" value="" required="required" /> <br />
-            <input type="text" placeholder="Meme Botom text" name="memebottom" value="" required="required" /> 
-            <br />
-            <input type="reset" />
-            <input type="button" value="Submit" />
-        </form>
+            <?php session_start(); ?>
+        
+        
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <a class="navbar-brand" href="index.php">Dank MEME's</a>
+    </div>
 
-    </p> 
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="index.php">Home<span class="sr-only">(current)</span></a></li>
+        <li><a href="sign-in.php">Sign-in<span class="sr-only">(current)</span></a></li>
+        <li><a href="signup.php">Sign-up<span class="sr-only">(current)</span></a></li>
+        <!-- if the login session is set and equals to true then display the link for the administrator -->
+        <?php if(isset($_SESSION["logged-in"]) && $_SESSION["logged-in"] == true): ?>
+        <li class="active"><a href="admin.php">Administrator<span class="sr-only">(current)</span></a></li>
+        <li><a href="uploadPage2.php">Upload<span class="sr-only">(current)</span></a></li>
+        <li role="presentation" id="logoutBtn"><a href="logout.php">Logout</a></li>
+        <?php endif; ?>
+        <li><span class="sr-only">(current)</span></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+        <br />
+        <br />
+        
+        <h1 class="page-header">Upload A Meme: </h1>
+        
+
+        <form id="uploadForm">
+            <div class="form-group">
+            <label for="memeTitle">Meme Title: </label>
+                <input type="text" placeholder="title" name="memeTitle" value="" required="required" /> <br />
+            </div>
+            <div class="form-group">
+            <label for="memetop">Meme Top Text: </label>
+                <input type="text" placeholder="Meme Top text" name="memetop" value="" required="required" /> <br />
+            </div>
+            <div class="form-group">
+            <label for="memebottom">Meme Bottom Text: </label>
+                <input type="text" placeholder="Meme Botom text" name="memebottom" value="" required="required" /> 
+            </div>
+            <br />
+            <input class="btn btn-primary" type="reset" value="Reset" />
+            <input type="button" value="Submit" class="btn btn-primary" />
+
+        </form>
+                    <br />
+            <br />
+        
+        <?php
+        
+        $user_id = $_SESSION['userid']; ?>
+        
+         <input hidden="true" type="text" name="ID" value="<?php echo $user_id ?>" />
+        
+ 
     <div id="files-img">
         <p>Drag an image file from your computer here</p>
         <p>or</p>
@@ -79,7 +138,9 @@
         var uploadProgress = document.querySelector('.progress');
         var memeTopText = document.querySelector('input[name="memetop"]');
         var memeBottomText = document.querySelector('input[name="memebottom"]');
+        var memeTitle = document.querySelector('input[name="memeTitle"]');
         var SubmitBtn = document.querySelector('input[type="button"]');
+        var ID = document.querySelector('input[name="ID"]');
         var imageReady = false,
                 fileToUpload;
         function Init() {
@@ -173,6 +234,8 @@
             formData.append('upfile', data);
             formData.append(memeTopText.name, memeTopText.value);
             formData.append(memeBottomText.name, memeBottomText.value);
+            formData.append(memeTitle.name, memeTitle.value);
+            formData.append(ID.name,ID.value);
             xmlhttp.open(verb, url, true);
             xmlhttp.send(formData);
             xmlhttp.onreadystatechange = function () {

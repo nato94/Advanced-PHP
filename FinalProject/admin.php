@@ -10,7 +10,7 @@
         <link rel="stylesheet" href="css/main.css">
         
         <style>
-            #fileDiv {
+            #fileDiv, #dltButton, #detailsButton {
                 position: relative;
                 left: 300px;
             }
@@ -66,8 +66,6 @@
         
         <h1 class="page-header">Administrator Page</h1>
 
-        
-        
         <!-- <input id="logoutBtn" class="btn btn-primary" type="submit" value="logout" name="logout" OnClick="logout.php"/> -->
         
         <ul class="nav nav-pills">
@@ -76,32 +74,25 @@
         
         <?php
         
+        include('./SuccessMessage.html.php');
+        include('./ErrorMessage.html.php');
+        
         
         $userMemes = $photos->getUserMemes($_SESSION['userid']);
         $folder = './uploads';
-        
-        
+  
         //add new instance of the DirectoryIterator class in order to get extensions and test to see which file is which and address accordingly
         $directory = new DirectoryIterator($folder);
-         
-       
-                    //$fileDate = date("l F j, Y, g:i a", $directory->getMTime());
-                    $fileExt = $directory->getExtension();
-                    $fileSize = $directory->getSize();
-                    
              
-                   
-                    
                foreach($userMemes as $key => $results ):  
                    
                    if(!isset($results['title'])){
                        $ErrorMessage[] = "No User Memes Found!";
                    }
-                   
+                   $fileExt = $directory->getExtension();
+                   $fileSize = $directory->getSize();
                    $title = $results['title'];
                    $fileName = $results['filename'];
-                   $fileTopText = $results['topText'];
-                   $fileBottomText = $results['bottomText'];
                    $fileDate = $results['created'];
                    $views = $results['views'];
                    
@@ -112,27 +103,18 @@
          <div id="fileDiv">
                 <h3><?php echo "Title: "; echo $results['title']; ?></h3>
                 <p>uploaded on <?php echo $fileDate; ?></p>
-           
-                
-                      
+               
                <!-- if the file has the right ext display the user memes --> 
                
-                <p id="memeTopText">
-                    <?php echo $results['topText']; ?>
-                </p>
                     <img width="50%" height="50%" src="<?php echo "uploads/$fileName";  ?>" />
-                <p id="memeBottomText">
-                    <?php echo $results['bottomText']; ?>
-                </p>
-                <a href="delete.php?filename=<?php echo $fileName; ?>" class="btn btn-default">Delete File</a> 
-                <a href="fileDetails.php?fileName=<?php echo $fileName?>&fileSize=<?php echo $fileSize ?>&fileDate=<?php echo $fileDate ?>&fileTopText=<?php echo $fileTopText ?>&fileBottomText=<?php echo $fileBottomText ?>&views=<?php echo $views ?>&title=<?php echo $title ?>" class="btn btn-default">View File</a>
-
-                    
+                
             </div> <!-- end file div -->
+            
+            <a id="dltButton" href="delete.php?filename=<?php echo $fileName; ?>" class="btn btn-default">Delete File</a> 
+            <a id="detailsButton" href="fileDetails.php?fileName=<?php echo $fileName?>&fileSize=<?php echo $fileSize ?>&fileDate=<?php echo $fileDate ?>&fileTopText=<?php echo $fileTopText ?>&fileBottomText=<?php echo $fileBottomText ?>&views=<?php echo $views ?>&title=<?php echo $title ?>" class="btn btn-default">View File</a>
         
                <?php endforeach; ?>
             
-            <?php include('./SuccessMessage.html.php');?>
-        <?php include('./ErrorMessage.html.php');?>
+           
     </body>
 </html>
