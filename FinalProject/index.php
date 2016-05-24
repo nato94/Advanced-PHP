@@ -1,6 +1,8 @@
 <html>
     <head>
-         <meta charset="UTF-8">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Final Project</title>
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -8,6 +10,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
         <!-- call the main css file that has all the style -->
         <link rel="stylesheet" href="css/main.css">
+        
     </head>
     <body>
         
@@ -15,9 +18,6 @@
          session_start();
         //call autoload class to load all classes for the page
         require_once './models/autoload.php';
-
-        
-
         ?>
         
         
@@ -49,8 +49,10 @@
         <br />
         <div class="container">
         <h1 class="page-header">Welcome to Dank MEME's!</h1>
+
         
         <?php
+        
        //initialize classes and variables to use
         $util = new util(); 
         $login = new login();
@@ -98,7 +100,13 @@
             </div> <!-- end file div -->
             
              <a href="fileDetails.php?fileName=<?php echo $specialMemeName?>&fileSize=<?php echo $specialMemeSize ?>&fileDate=<?php echo $specialMemeDate ?>&fileTopText=<?php echo $specialMemeTopText ?>&fileBottomText=<?php echo $specialMemeBottomText ?>&views=<?php echo $specialMemeViews ?>&title=<?php echo $specialMemeTitle ?>" class="btn btn-default">View File</a>
-            
+             <a href="mail.php" class="btn btn-default">Email Meme</a>
+             <a
+                href="http://twitter.com/share?text=The%20Dankest%20of%20Memes&url=http://localhost/Assignment1/FinalProject/index.php"
+                target="_blank"
+                title="Click to post to Twitter"><img src="./CSS/tweet_button.jpg">
+                </a>
+             
             <?php  
             else:
                 $ErrorMessage[] = "No Meme's found!";
@@ -125,7 +133,6 @@
 
             ?>
        
-                <h1>All Other Memes: </h1>
             <div id="fileDiv">
                 <h3><?php echo "Title: "; echo $title; ?></h3>
                 <p>uploaded on <?php echo $fileDate; ?></p>
@@ -138,7 +145,13 @@
             </div> <!-- end file div -->
                 
                <a href="fileDetails.php?fileName=<?php echo $fileName?>&fileSize=<?php echo $fileSize ?>&fileDate=<?php echo $fileDate ?>&fileTopText=<?php echo $fileTopText ?>&fileBottomText=<?php echo $fileBottomText ?>&views=<?php echo $views ?>&title=<?php echo $title ?>" class="btn btn-default">View File</a>
-
+               <a href="mail.php" class="btn btn-default">Email Meme</a>
+               <a
+                href="http://twitter.com/share?text=The%20Dankest%20of%20Memes&url=http://localhost/Assignment1/FinalProject/index.php"
+                target="_blank"
+                title="Click to post to Twitter"><img src="./CSS/tweet_button.jpg">
+                </a>
+               
                 <?php $count++;?>
         <?php endforeach; 
 

@@ -23,15 +23,6 @@ class util {
     public function createLink($page, array $params = array()) {        
         return $page . '?' .http_build_query($params);
     }
-    
-    public function mailMeme($message, $email, $subject){
-        // Send
-        $headers =  'MIME-Version: 1.0' . "\r\n"; 
-        $headers .= 'From: Meme User <info@address.com>' . "\r\n";
-        $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-
-        mail($email, $subject, $message, $headers);
-    }
 
     
     

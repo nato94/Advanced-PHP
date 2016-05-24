@@ -9,6 +9,10 @@ class util {
        return ( filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST' );
    }
    
+   public function isGetRequest() {
+       return ( filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'GET' );
+   }
+   
     public function redirect($page, array $params = array()) {
         header('Location: ' . $this->createLink($page, $params));
         die();

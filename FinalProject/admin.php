@@ -1,6 +1,8 @@
 <html>
     <head>
          <meta charset="UTF-8">
+         <meta name="viewport" content="width=device-width, initial-scale=1">
+         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Final Project</title>
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -10,7 +12,7 @@
         <link rel="stylesheet" href="css/main.css">
         
         <style>
-            #fileDiv, #dltButton, #detailsButton {
+            #fileDiv, #dltButton, #detailsButton, #tweet {
                 position: relative;
                 left: 300px;
             }
@@ -112,7 +114,12 @@
             
             <a id="dltButton" href="delete.php?filename=<?php echo $fileName; ?>" class="btn btn-default">Delete File</a> 
             <a id="detailsButton" href="fileDetails.php?fileName=<?php echo $fileName?>&fileSize=<?php echo $fileSize ?>&fileDate=<?php echo $fileDate ?>&fileTopText=<?php echo $fileTopText ?>&fileBottomText=<?php echo $fileBottomText ?>&views=<?php echo $views ?>&title=<?php echo $title ?>" class="btn btn-default">View File</a>
-        
+            <a href="mail.php" class="btn btn-default">Email Meme</a>
+            <a id='tweet'
+                href="http://twitter.com/share?text=The%20Dankest%20of%20Memes&url=http://localhost/Assignment1/FinalProject/index.php"
+                target="_blank"
+                title="Click to post to Twitter"><img src="./CSS/tweet_button.jpg">
+                </a>
                <?php endforeach; ?>
             
            

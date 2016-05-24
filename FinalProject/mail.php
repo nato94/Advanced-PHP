@@ -1,3 +1,4 @@
+
 <?php
 
 /* 
@@ -59,7 +60,7 @@ session_start();
         <li><a href="signup.php">Sign-up<span class="sr-only">(current)</span></a></li>
         <!-- if the login session is set and equals to true then display the link for the administrator -->
         <?php if(isset($_SESSION["logged-in"]) && $_SESSION["logged-in"] == true): ?>
-        <li class="active"><a href="admin.php">Administrator<span class="sr-only">(current)</span></a></li>
+        <li><a href="admin.php">Administrator<span class="sr-only">(current)</span></a></li>
         <li><a href="uploadPage.php">Upload<span class="sr-only">(current)</span></a></li>
         <li role="presentation" id="logoutBtn"><a href="logout.php">Logout</a></li>
         <?php endif; ?>
@@ -77,28 +78,35 @@ session_start();
           <?php include('./ErrorMessage.html.php'); 
             include ('./SuccessMessage.html.php');
           
-          $photos = new photos();
-          $photos->updateViews($views, $fileName);
+          $util = new util();
+          
+          if($util->isPostRequest()){
+             $values = filter_input_array(INPUT_POST); 
+              $message = $values['message'];
+              $email = $values['email'];
+              $subject = $values['subject'];
+            $util->mailMeme($message, $email, $subject);
+          }
           ?>
         
+         <h1>Mail Meme</h1>
+            <form action="#" method="POST"> 
+                <div class="form-group">
+                <label for="email">Email:</label>
+                    <input type="text" name="email" placeholder="Enter Email Here" /> <br />
+                </div>
+                <div class="form-group">
+                <label for="subject">Subject:</label>
+                    <input type="text" name="subject" placeholder="Enter Subject Here" /> <br />
+                </div>
+                <div class="form-group">
+                    <label for="message">Message:</label>
+                    <input type="text" name="message" placeholder="Enter Message Here" /> <br />
+                </div>
+               <input id="loginBtn" type="submit" value="Send Email" class="btn btn-primary" />
+            </form>
         
-            <div id="fileDiv">
-                <h3>Title: <?php echo $title;?></h3>
-                <p>uploaded on <?php echo $fileDate; ?></p>
-                <p>This file is <?php echo $fileSize; ?> byte's</p>
-                <p>Views: <?php echo $views; ?></p>
-        
-                    <img width="100%" height="100%" src="<?php echo "uploads/$fileName";  ?>" />
-            
-            </div> <!-- end file div -->
-            <a id="dltButton" href="delete.php?filename=<?php echo $fileName; ?>" class="btn btn-default">Delete File</a>
-            <a href="mail.php" class="btn btn-default">Email Meme</a>
-            <a
-                href="http://twitter.com/share?text=The%20Dankest%20of%20Memes&url=http://localhost/Assignment1/FinalProject/index.php"
-                target="_blank"
-                title="Click to post to Twitter"><img src="./CSS/tweet_button.jpg">
-                </a>
-            
+
         </div> <!-- end container div  -->
         
         <br />
@@ -106,4 +114,3 @@ session_start();
         
     </body>
 </html>
-
