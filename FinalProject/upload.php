@@ -15,7 +15,8 @@
         $values = filter_input_array(INPUT_POST);
         $util = new util();
         session_start();
-        
+        $folder = "./uploads";
+        $directory = new DirectoryIterator($folder);
             if($util->isPostRequest()){
                 //if the post is set then get the variables
                 //$login->get_user_id($values);
@@ -26,13 +27,14 @@
                 $user_id = $_SESSION['userid'];
                 $views = 0;
                 $created = date("Y-m-d H:i:s");
+                $size = $directory->getSize();
             }//end get request*/
 
-        $filehandler = new Filehandler();
+        $filehandler = new Files();
 
         try {
             $fileName = $filehandler->upLoad("file");
-            $filehandler->AddPhoto($user_id, $fileName, $title, $topText, $bottomText, $views, $created);
+            $filehandler->AddPhoto($user_id, $fileName, $title, $topText, $bottomText, $size, $views, $created);
 
         } catch (RuntimeException $e) {
             $error = $e->getMessage();

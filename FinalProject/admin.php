@@ -24,7 +24,7 @@
         require_once './models/autoload.php';
         session_start();
         $login = new login();
-        
+        $photos = new photos();
         
         if($_SESSION['logged-in'] != true){
             header("Location: index.php");
@@ -53,8 +53,8 @@
         <!-- if the login session is set and equals to true then display the link for the administrator -->
         <?php if(isset($_SESSION["logged-in"]) && $_SESSION["logged-in"] == true): ?>
         <li class="active"><a href="admin.php">Administrator<span class="sr-only">(current)</span></a></li>
-        <li role="presentation" id="logoutBtn"><a href="logout.php">Logout</a></li>
         <li><a href="uploadPage.php">Upload<span class="sr-only">(current)</span></a></li>
+        <li role="presentation" id="logoutBtn"><a href="logout.php">Logout</a></li>
         <?php endif; ?>
         <li><span class="sr-only">(current)</span></li>
       </ul>
@@ -77,7 +77,7 @@
         <?php
         
         
-        $userMemes = $login->getUserMemes($_SESSION['userid']);
+        $userMemes = $photos->getUserMemes($_SESSION['userid']);
         $folder = './uploads';
         
         

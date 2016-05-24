@@ -37,8 +37,8 @@
         <!-- if the login session is set and equals to true then display the link for the administrator -->
         <?php if(isset($_SESSION["logged-in"]) && $_SESSION["logged-in"] == true): ?>
         <li><a href="admin.php">Administrator<span class="sr-only">(current)</span></a></li>
-        <li role="presentation" id="logoutBtn"><a href="logout.php">Logout</a></li>
         <li><a href="uploadPage.php">Upload<span class="sr-only">(current)</span></a></li>
+        <li role="presentation" id="logoutBtn"><a href="logout.php">Logout</a></li>
         <?php endif; ?>
         <li><span class="sr-only">(current)</span></li>
       </ul>
@@ -54,9 +54,9 @@
        //initialize classes and variables to use
         $util = new util(); 
         $login = new login();
+        $photos = new photos();
          $count = 1;
          $photo_id = array();
-         $folder = './uploads';
          $values = filter_input_array(INPUT_POST);
                 
          //if the user id is set then insert it into the variable
@@ -66,87 +66,25 @@
 include('./SuccessMessage.html.php');
 include('./ErrorMessage.html.php');
         
-
-        //add new instance of the DirectoryIterator class in order to get extensions and test to see which file is which and address accordingly
-        $directory = new DirectoryIterator($folder);
-
-       
         ?>
 
         
-        
-        <?php foreach ($directory as $file) :?>  
-        
-        <?php
-        //code to display the memes found in the database 
-        
-                    $fileName = $file->getFilename();
-                    $fileSize = $file->getSize();
-                    $fileDate = date("l F j, Y, g:i a", $file->getMTime());
-                    $filePath = $file->getPathname();
-                    $memeText = $login->getMemeText($fileName);
-                    
-                   
-                    
-               foreach( $memeText as $key => $results ):    
-                   
-                    ?>
-        
+        <!-- php code for getting the meme of the moment -->
             <?php 
-            //set variables to the database values for all the memes
-                $fileTopText = $results['topText'];
-                $fileBottomText = $results['bottomText']; 
-                $photo_id[$count-1] = $results['photo_id'];
-                $views = $results['views'];
-                $title = $results['title'];
-
-
-            ?>
-        
-            <?php if ( is_file($folder . DIRECTORY_SEPARATOR . $file) ) : ?>
-                
-            <div id="fileDiv">
-                <h3><?php echo "Title: "; echo $results['title']; ?></h3>
-                <p>uploaded on <?php echo date("l F j, Y, g:i a", $file->getMTime()); ?></p>
-                <p>This file is <?php echo $file->getSize(); ?> byte's</p>
-                      
-                
-                <p id="memeTopText">
-                    <?php echo $results['topText']; ?>
-                </p>
-                    <img width="40%" height="40%" src="<?php echo $filePath;  ?>" />
-                <p id="memeBottomText">
-                    <?php echo $results['bottomText']; ?>
-                </p>
-                    
-                    
-                    
-            </div> <!-- end file div -->
-           
-                    
-                    
-                
-               <a href="fileDetails.php?fileName=<?php echo $fileName?>&fileSize=<?php echo $fileSize ?>&fileDate=<?php echo $fileDate ?>&fileTopText=<?php echo $fileTopText ?>&fileBottomText=<?php echo $fileBottomText ?>&views=<?php echo $views ?>&title=<?php echo $title ?>" class="btn btn-default">View File</a>
-
-                <?php $count++; endif;?>
-        <?php endforeach; ?>
-        <?php endforeach; ?>
-               
-            <?php    
+   /*         
                 $i = rand(0, $count-1);
-                
-                
-                while($login->getMemeOfTheDay($photo_id[$i]) == false){
+ 
+                while($photos->getMemeOfTheDay($photo_id[$i]) == false){
                     //$photo = $photo_id[$i];
                     
                     $i = rand(0, $count-1);
                 }
 
                 //code for the meme of the moment
-                $memeOfTheDay = $login->getMemeOfTheDay($photo_id[$i]);
-                foreach( $memeOfTheDay as $key => $specialMeme ):?>
+                $memeOfTheDay = $photos->getMemeOfTheDay($photo_id[$i]);
+                foreach( $memeOfTheDay as $key => $specialMeme ):?>*/
+                $specialMeme = $photos->getMemeOfTheDay();
                
-               <?php 
                //set variables to database data for the meme of the moment
                $specialMemeTitle = $specialMeme['title'];
                $specialMemeName = $specialMeme['filename']; 
@@ -154,7 +92,7 @@ include('./ErrorMessage.html.php');
                $specialMemeViews = $specialMeme['views'];
                $specialMemeTopText = $specialMeme['topText'];
                $specialMemeBottomText = $specialMeme['bottomText'];
-               $specialMemeSize = $file->getSize();
+               $specialMemeSize = $specialMeme['size'];
                
                ?>
                         
@@ -177,7 +115,59 @@ include('./ErrorMessage.html.php');
                     
             </div> <!-- end file div -->
             
-            <?php endforeach; ?>
+            <h1>All Other Memes: </h1>
+        <?php
+        //code to display the memes found in the database 
+                    $memeText = $photos->getAllPhotos();
+         
+               foreach( $memeText as $key => $results ):    
+                   
+                    ?>
+        
+            <?php 
+            //set variables to the database values for all the memes
+            
+                $fileName = $results['filename'];
+                $fileDate = $results['created'];
+                $fileSize = $results['size'];
+                $fileTopText = $results['topText'];
+                $fileBottomText = $results['bottomText']; 
+                $photo_id[$count-1] = $results['photo_id'];
+                $views = $results['views'];
+                $title = $results['title'];
+
+
+            ?>
+       
+                
+            <div id="fileDiv">
+                <h3><?php echo "Title: "; echo $title; ?></h3>
+                <p>uploaded on <?php echo $fileDate; ?></p>
+                <p>This file is <?php echo $fileSize; ?> byte's</p>
+                      
+                
+                <p id="memeTopText">
+                    <?php echo $fileTopText; ?>
+                </p>
+                    <img width="40%" height="40%" src="<?php echo  "uploads/$fileName";  ?>" />
+                <p id="memeBottomText">
+                    <?php echo $fileBottomText; ?>
+                </p>
+                    
+                    
+                    
+            </div> <!-- end file div -->
+           
+                    
+                    
+                
+               <a href="fileDetails.php?fileName=<?php echo $fileName?>&fileSize=<?php echo $fileSize ?>&fileDate=<?php echo $fileDate ?>&fileTopText=<?php echo $fileTopText ?>&fileBottomText=<?php echo $fileBottomText ?>&views=<?php echo $views ?>&title=<?php echo $title ?>" class="btn btn-default">View File</a>
+
+                <?php $count++;?>
+        <?php endforeach; ?>
+               
+               
+            
                 
     
     

@@ -1,19 +1,12 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-namespace week3\gforti;
 
 /**
  * Description of Filehandler
  *
  * @author Nato
  */
-class Filehandler {
+class Files {
              
             
 
@@ -84,13 +77,13 @@ class Filehandler {
                 return $fileName . '.' . $ext;
             }//end upLoad
             
-           function AddPhoto($user_id, $fileName, $title, $topText, $bottomText, $views, $created){
+           function AddPhoto($user_id, $fileName, $title, $topText, $bottomText, $size, $views, $created){
         
             $connection = new db();
         
             $db = $connection->dbconnect();
         
-            $query = "INSERT INTO photos (user_id, filename, title, topText, bottomText, views, created) VALUES (:user_id, :filename, :title, :topText, :bottomText, :views, :created)";
+            $query = "INSERT INTO photos (user_id, filename, title, topText, bottomText, size, views, created) VALUES (:user_id, :filename, :title, :topText, :bottomText, :size, :views, :created)";
     
             try { 
                 $stmt = $db->prepare($query);
@@ -99,6 +92,7 @@ class Filehandler {
                 $stmt->bindValue(':title', $title);
                 $stmt->bindValue(':topText', $topText);
                 $stmt->bindValue(':bottomText', $bottomText);
+                $stmt->bindValue(':size', $size);
                 $stmt->bindValue(':views', $views);
                 $stmt->bindValue(':created', $created);
 		$rowCount = $stmt->execute();

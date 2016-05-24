@@ -21,11 +21,6 @@ session_start();
         $title = filter_input(INPUT_GET, 'title');
         $ErrorMessage = [];
         
-        
-//if the file is empty then remove the file
-if (!is_file($folder . DIRECTORY_SEPARATOR . $fileName)){
-    $ErrorMessage[] = "File Not Found!";
-}
 
 ?>
 <!Doctype html>
@@ -80,8 +75,8 @@ if (!is_file($folder . DIRECTORY_SEPARATOR . $fileName)){
         <!-- if the login session is set and equals to true then display the link for the administrator -->
         <?php if(isset($_SESSION["logged-in"]) && $_SESSION["logged-in"] == true): ?>
         <li class="active"><a href="admin.php">Administrator<span class="sr-only">(current)</span></a></li>
-        <li role="presentation" id="logoutBtn"><a href="logout.php">Logout</a></li>
         <li><a href="uploadPage.php">Upload<span class="sr-only">(current)</span></a></li>
+        <li role="presentation" id="logoutBtn"><a href="logout.php">Logout</a></li>
         <?php endif; ?>
         <li><span class="sr-only">(current)</span></li>
       </ul>
@@ -97,8 +92,8 @@ if (!is_file($folder . DIRECTORY_SEPARATOR . $fileName)){
           <?php include('./ErrorMessage.html.php'); 
             include ('./SuccessMessage.html.php');
           
-          $login = new login();
-          $login->updateViews($views, $fileName);
+          $photos = new photos();
+          $photos->updateViews($views, $fileName);
           ?>
         
         
